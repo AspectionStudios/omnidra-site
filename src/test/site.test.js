@@ -26,6 +26,8 @@ test('core content: hero, both research areas, why, contact, footer', () => {
   assert.match(html, /<a class="mail" href="mailto:ruinkeen@omnidraglobal\.com">ruinkeen@omnidraglobal\.com<\/a>/);
   assert.match(html, /<a class="mail" href="mailto:ruinkeen@aspectionstudios\.com">ruinkeen@aspectionstudios\.com<\/a>/);
   assert.ok(html.indexOf('mailto:ruinkeen@omnidraglobal.com') < html.indexOf('mailto:ruinkeen@aspectionstudios.com'), 'omnidra address first');
+  assert.match(html, /<a class="mail tel" href="tel:\+18733492216">\(873\) 349-2216<\/a>/);
+  assert.ok(html.indexOf('mailto:ruinkeen@aspectionstudios.com') < html.indexOf('tel:+18733492216'), 'phone under the emails');
   assert.doesNotMatch(html, /coming soon|PLACEHOLDER/i);
   assert.match(html, /© 2026 Omnidra/);
   assert.match(html, /<main id="main">/);
@@ -44,7 +46,7 @@ test('every local asset referenced exists; no remote assets', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/[^"]+\/">/);
   const refs = [...body.matchAll(/(?:href|src)="([^"#]+)"/g)].map(m => m[1]);
   for (const r of refs) {
-    if (/^mailto:/.test(r)) continue;
+    if (/^(mailto|tel):/.test(r)) continue;
     if (/^https?:/.test(r)) { assert.fail('remote asset ' + r); }
     assert.ok(fs.existsSync(path.join(SITE, r)), 'missing ' + r);
   }

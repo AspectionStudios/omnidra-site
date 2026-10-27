@@ -9,4 +9,4 @@ Static landing page for omnidraglobal.com. Plain HTML/CSS/JS + one WebAssembly f
 - test/         — node --test test/site.test.js (SITE_DIR=dist to point at a folder).
 
 Zig 0.15.2: zig build-exe src/hero.zig -target wasm32-freestanding -fno-entry -rdynamic -O ReleaseSmall -fstrip
-Contact: ruinkeen@omnidraglobal.com (first) and ruinkeen@aspectionstudios.com — two mailto links in the contact section of web/index.html.
+Contact: ruinkeen@omnidraglobal.com (first), ruinkeen@aspectionstudios.com, and phone (873) 349-2216 — two mailto links and a tel: link (tel:+18733492216) in the contact section of web/index.html.

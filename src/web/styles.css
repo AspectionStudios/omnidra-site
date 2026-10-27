@@ -59,6 +59,7 @@ section{padding-top:clamp(72px,11vw,128px)}
 .mails{list-style:none;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .mails li{margin:0}
 .mail{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(143,216,255,.35);padding-bottom:2px;overflow-wrap:anywhere;transition:color .2s,border-color .2s}
+.tel{font-variant-numeric:tabular-nums;white-space:nowrap}
 .mail:hover{color:var(--accent);border-color:var(--accent)}
 
 .footer{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;margin-top:clamp(80px,12vw,140px);padding-top:28px;padding-bottom:max(36px,env(safe-area-inset-bottom));border-top:1px solid var(--line);font-size:14px;color:var(--dim)}
