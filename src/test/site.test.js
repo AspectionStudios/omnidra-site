@@ -24,6 +24,8 @@ test('core content: hero, both research areas, why, contact, footer', () => {
   assert.match(html, /without crushing them through heavy quantization/);
   assert.match(html, /AI that runs on the hardware people actually have\./);
   assert.match(html, /<a class="mail" href="mailto:ruinkeen@omnidraglobal\.com">ruinkeen@omnidraglobal\.com<\/a>/);
+  assert.match(html, /<a class="mail" href="mailto:ruinkeen@aspectionstudios\.com">ruinkeen@aspectionstudios\.com<\/a>/);
+  assert.ok(html.indexOf('mailto:ruinkeen@omnidraglobal.com') < html.indexOf('mailto:ruinkeen@aspectionstudios.com'), 'omnidra address first');
   assert.doesNotMatch(html, /coming soon|PLACEHOLDER/i);
   assert.match(html, /© 2026 Omnidra/);
   assert.match(html, /<main id="main">/);
