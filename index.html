@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Omnidra — independent AI research lab</title>
+<meta name="description" content="Omnidra is an independent research lab working on test-time training and on running frontier models on old and edge hardware, without heavy quantization.">
+<meta name="theme-color" content="#06070a">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://omnidraglobal.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Omnidra">
+<meta property="og:title" content="Omnidra — independent AI research lab">
+<meta property="og:description" content="Test-time training. Frontier models on the hardware people actually have.">
+<meta property="og:url" content="https://omnidraglobal.com/">
+<meta property="og:image" content="https://omnidraglobal.com/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Omnidra — a field of light-blue flow lines on black">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Omnidra — independent AI research lab">
+<meta name="twitter:description" content="Test-time training. Frontier models on the hardware people actually have.">
+<meta name="twitter:image" content="https://omnidraglobal.com/og.jpg">
+<link rel="preload" href="hero.wasm" as="fetch" type="application/wasm" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero" id="top">
+  <div class="field-fallback" aria-hidden="true"></div>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="veil" aria-hidden="true"></div>
+
+  <nav class="nav wrap" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="Omnidra home">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="13.5" cy="18.5" r="9" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="25.8" cy="6.2" r="3.9" fill="#8fd8ff"/></svg>
+      <span>Omnidra</span>
+    </a>
+    <div class="nav-links">
+      <a href="#research">Research</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <div class="hero-copy wrap">
+    <p class="eyebrow">Independent AI research lab</p>
+    <h1>Omnidra</h1>
+    <p class="mission">Frontier models that keep learning at test time, and run on the hardware people actually have.</p>
+    <a class="cta" href="#research">See the research <span aria-hidden="true">↓</span></a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="research wrap" id="research" aria-labelledby="research-h">
+    <h2 id="research-h" class="label">What we work on</h2>
+    <div class="cards">
+      <article class="card">
+        <p class="num">01</p>
+        <h3>Test-time training</h3>
+        <p>Models that keep learning at inference. Instead of a fixed set of weights, the model adapts to the input in front of it, while it runs.</p>
+      </article>
+      <article class="card">
+        <p class="num">02</p>
+        <h3>Frontier models on old and edge hardware</h3>
+        <p>Running large models on older GPUs and edge devices without crushing them through heavy quantization. Keep the quality, drop the datacenter requirement.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="why wrap" aria-labelledby="why-h">
+    <h2 id="why-h" class="label">Why it matters</h2>
+    <p class="statement">AI that runs on the hardware people actually have.</p>
+  </section>
+
+  <section class="contact wrap" id="contact" aria-labelledby="contact-h">
+    <h2 id="contact-h" class="label">Contact</h2>
+    <p class="soon"><a class="mail" href="mailto:ruinkeen@omnidraglobal.com">ruinkeen@omnidraglobal.com</a></p>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <p>© 2026 Omnidra</p>
+  <p class="built" id="built">Hero field computed live by a 2.2 KB Zig program compiled to WebAssembly.</p>
+</footer>
+</body>
+</html>
