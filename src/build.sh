@@ -15,7 +15,7 @@ WASM_BYTES=$(stat -c %s build/hero.wasm)
 WASM_KB=$(awk "BEGIN{printf \"%.1f\", ${WASM_BYTES}/1024}")
 cp build/hero.wasm "$OUT/hero.wasm"
 cp web/styles.css web/script.js web/favicon.svg "$OUT/"
-for f in web/og.jpg web/favicon-32.png web/apple-touch-icon.png; do [ -f "$f" ] && cp "$f" "$OUT/"; done
+for f in web/og.jpg web/favicon-32.png web/apple-touch-icon.png web/aspection-hero.webp web/as-grotesk.woff2 web/as-inter.woff2; do [ -f "$f" ] && cp "$f" "$OUT/"; done
 sed -e "s#__BASE_URL__#${BASE_URL}#g" -e "s#__WASM_KB__#${WASM_KB}#g" web/index.html > "$OUT/index.html"
 for f in robots.txt sitemap.xml; do sed -e "s#__BASE_URL__#${BASE_URL}#g" "web/$f" > "$OUT/$f"; done
 echo "omnidraglobal.com" > "$OUT/CNAME"

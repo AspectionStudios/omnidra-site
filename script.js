@@ -79,3 +79,54 @@
     go.then(function (res) { try { start(res.instance); } catch (e) { fail(); } }, fail);
   } catch (e) { fail(); }
 })();
+
+
+// Cross-site crossfade (Omnidra -> Aspection Studios) + arrival from aspectionstudios.com. rAF-throttled.
+(function () {
+  var root = document.documentElement;
+  var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  // arrival: ?from=aspection -> open on the frame Aspection's Omnidra section ended on, settle, then clean the URL
+  if (/[?&]from=aspection(&|$)/.test(location.search)) {
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+  }
+  if (root.classList.contains('arrive')) {
+    setTimeout(function () { root.classList.add('arrive-go'); }, 420);
+    setTimeout(function () { root.classList.remove('arrive', 'arrive-go'); }, 1700);
+  }
+  var sec = document.querySelector('.xf-studio');
+  if (!sec) return;
+  var stage = sec.querySelector('.xf-stage');
+  var raf = 0, near = false, last = '';
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  function seg(p, a, b) { return ease(clamp((p - a) / (b - a))); }
+  function apply(p) {
+    var out = seg(p, 0.04, 0.46), bg = seg(p, 0.1, 0.66), inn = seg(p, 0.36, 0.84), nav = seg(p, 0.55, 0.92);
+    if (mq.matches) { out = bg = inn = nav = p >= 0.3 ? 1 : 0; }
+    var v = [out, bg, inn, nav].map(function (x) { return x.toFixed(3); });
+    var key = v.join();
+    if (key === last) return;
+    last = key;
+    sec.style.setProperty('--out', v[0]); sec.style.setProperty('--bg', v[1]);
+    sec.style.setProperty('--in', v[2]); sec.style.setProperty('--nav', v[3]);
+    if (inn > 0.6) sec.setAttribute('data-end', ''); else sec.removeAttribute('data-end');
+  }
+  function tick() {
+    raf = 0;
+    var r = sec.getBoundingClientRect(), d = sec.offsetHeight - stage.offsetHeight;
+    apply(d > 0 ? clamp(-r.top / d) : 1);
+  }
+  function req() { if (!raf) raf = requestAnimationFrame(tick); }
+  sec.classList.toggle('xf-rm', mq.matches);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) {
+      near = e[0].isIntersecting;
+      if (near) { sec.classList.add('xf-near'); req(); }
+    }, { rootMargin: '100% 0px 100% 0px' }).observe(sec);
+  } else { near = true; sec.classList.add('xf-near'); }
+  window.addEventListener('scroll', function () { if (near) req(); }, { passive: true });
+  window.addEventListener('resize', req);
+  var onMq = function () { sec.classList.toggle('xf-rm', mq.matches); last = ''; req(); };
+  if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);
+  tick();
+})();

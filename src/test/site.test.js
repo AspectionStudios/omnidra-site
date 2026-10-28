@@ -8,7 +8,7 @@ const read = f => fs.readFileSync(path.join(SITE, f), 'utf8');
 const html = read('index.html');
 
 test('title, viewport, description, og/twitter tags', () => {
-  assert.match(html, /<title>Omnidra — independent AI research lab<\/title>/);
+  assert.match(html, /<title>Omnidra — Independent AI Research Lab for Test-Time Training<\/title>/);
   assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1/);
   assert.match(html, /<meta name="description" content="[^"]{40,}">/);
   for (const p of ['og:title', 'og:description', 'og:url', 'og:image', 'og:image:width', 'og:image:height'])
@@ -44,7 +44,11 @@ test('every local asset referenced exists; no remote assets', () => {
   // the canonical link is the page's own absolute address, not an asset
   const body = html.replace(/<link rel="canonical"[^>]*>/, '');
   assert.match(html, /<link rel="canonical" href="https:\/\/[^"]+\/">/);
-  const refs = [...body.matchAll(/(?:href|src)="([^"#]+)"/g)].map(m => m[1]);
+  // outbound links (<a href>) to the studio's own GitHub and site are links, not assets
+  const OUTBOUND = ['https://github.com/AspectionStudios', 'https://aspectionstudios.com/?from=omnidra'];
+  const links = [...body.matchAll(/<a\b[^>]*\bhref="(https?:[^"]+)"/g)].map(m => m[1]);
+  for (const l of links) assert.ok(OUTBOUND.includes(l), 'unexpected outbound link ' + l);
+  const refs = [...body.matchAll(/(?:href|src)="([^"#]+)"/g)].map(m => m[1]).filter(r => !OUTBOUND.includes(r));
   for (const r of refs) {
     if (/^(mailto|tel):/.test(r)) continue;
     if (/^https?:/.test(r)) { assert.fail('remote asset ' + r); }
@@ -52,6 +56,28 @@ test('every local asset referenced exists; no remote assets', () => {
   }
   for (const f of ['og.jpg', 'favicon.svg', 'favicon-32.png', 'apple-touch-icon.png', 'hero.wasm', 'script.js', 'styles.css'])
     assert.ok(fs.existsSync(path.join(SITE, f)), f);
+});
+
+test('GitHub sits in the contact list under the phone line, same style', () => {
+  assert.match(html, /<li><a class="mail" href="https:\/\/github\.com\/AspectionStudios" target="_blank" rel="noopener">github\.com\/AspectionStudios<\/a><\/li>/);
+  assert.ok(html.indexOf('tel:+18733492216') < html.indexOf('https://github.com/AspectionStudios'), 'GitHub after the phone');
+  assert.ok(html.indexOf('https://github.com/AspectionStudios') < html.indexOf('</ul>', html.indexOf('id="contact"')), 'inside the contact list');
+});
+
+test('studio crossfade section + arrival from aspectionstudios.com', () => {
+  const js = read('script.js'), css = read('styles.css');
+  assert.match(html, /<section class="xf xf-studio" id="studio"/);
+  assert.match(html, /Our studio<span class="vh">:<\/span><\/span> <span class="xs-name">Aspection Studios<\/span>/);
+  assert.match(html, /<a class="xa-btn" href="https:\/\/aspectionstudios\.com\/\?from=omnidra">Visit Aspection Studios/);
+  assert.ok(html.indexOf('id="studio"') > html.indexOf('id="contact"') && html.indexOf('id="studio"') < html.indexOf('<footer'), 'final section before the footer');
+  assert.match(html, /from=aspection\(&\|\$\)\/\.test\(location\.search\)/, 'arrival flag set before first paint');
+  assert.match(html, /<span class="cta cta-ghost" aria-hidden="true">Visit Omnidra/);
+  assert.match(js, /history\.replaceState/);
+  assert.match(js, /requestAnimationFrame\(tick\)/);
+  assert.match(css, /\.arrive \.cta-ghost/);
+  assert.match(css, /\.xf-stage\{position:sticky/);
+  for (const f of ['aspection-hero.webp', 'as-grotesk.woff2', 'as-inter.woff2']) assert.ok(fs.existsSync(path.join(SITE, f)), f);
+  assert.doesNotMatch(html, /<link[^>]+fonts\.googleapis/);
 });
 
 test('og.jpg is 1200x630', () => {
