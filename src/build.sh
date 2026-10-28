@@ -17,5 +17,6 @@ cp build/hero.wasm "$OUT/hero.wasm"
 cp web/styles.css web/script.js web/favicon.svg "$OUT/"
 for f in web/og.jpg web/favicon-32.png web/apple-touch-icon.png; do [ -f "$f" ] && cp "$f" "$OUT/"; done
 sed -e "s#__BASE_URL__#${BASE_URL}#g" -e "s#__WASM_KB__#${WASM_KB}#g" web/index.html > "$OUT/index.html"
+for f in robots.txt sitemap.xml; do sed -e "s#__BASE_URL__#${BASE_URL}#g" "web/$f" > "$OUT/$f"; done
 echo "omnidraglobal.com" > "$OUT/CNAME"
 echo "built $OUT (hero.wasm ${WASM_BYTES} B, base ${BASE_URL})"
